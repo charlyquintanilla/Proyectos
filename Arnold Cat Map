@@ -1,0 +1,30 @@
+function arnold_cat_map(image_path, iterations)
+  % Cargar la imagen
+  img = imread(image_path);
+  [n, m, c] = size(img);
+  
+  % Verificar que la imagen es cuadrada
+  if n ~= m
+    error('La imagen debe ser cuadrada (n x n).');
+  end
+
+  % Aplicar el Arnold Cat Map
+  for i = 1:iterations
+    for x = 1:n
+      for y = 1:n
+        % Calcular las nuevas coordenadas
+        new_x = mod(2*x + y - 1, n) + 1;
+        new_y = mod(x + y - 1, n) + 1;
+        
+        % Asignar el valor del píxel a la nueva posición
+        for j = 1:c
+          new_img(new_x, new_y, j) = img(x, y, j);
+        end
+      end
+    end
+    img = new_img;
+    imshow(uint8(img));
+    title(['Iteración: ', num2str(i)]);
+    pause(0.1);
+  end
+end
